@@ -40,6 +40,27 @@ const cartReducer=(state,action)=>{
         };
     }
 
+    if(action.type==='REMOVE'){
+        const exsistingCartItemsIndex=state.items.findIndex((item)=>item.id===action.id);
+        const exisitingCartItem=state.items[exsistingCartItemsIndex];
+
+        const updatedTotalAmount=state.totalAmount-exisitingCartItem.price;
+        let updatedItems;
+
+        if(exisitingCartItem.amount===1){
+            updatedItems=state.items.filter(item=>item.id!=action.id);
+        }else{
+            const updatedItem={...exisitingCartItem,amount:exisitingCartItem.amount-1};
+            updatedItems=[...state.items];
+            updatedItems[exsistingCartItemsIndex]=updatedItem;
+        }
+
+        return{
+            items:updatedItems,
+            totalAmount:updatedTotalAmount
+        };
+    }
+
     return defaultCartstate;
 };
 
