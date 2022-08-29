@@ -7,6 +7,7 @@ import axios from 'axios';
    const AvailableMeals=()=>{
 
     const [smeals,setMeals]=useState([]);
+    const [isLoading,setIsloading]=useState(true);
 
     useEffect(()=>{
       axios.get("https://food-order-app-83f61-default-rtdb.firebaseio.com/meals.json").then((res)=>{
@@ -22,12 +23,22 @@ import axios from 'axios';
           });
         }
         setMeals(loadMeals);
+        setIsloading(false);
       }).catch((err)=>{
         console.log("Error.......!!!!!!")
       })
     },[]);
 
-    console.log(smeals);
+    //console.log(smeals);
+
+    if(isLoading){
+        return(
+          <section className={classes.MealsLoading}>
+            <p>Loading....!</p>
+          </section>
+        )
+    }
+
 
     const mealslist=smeals.map((meal)=>(
         <MealItem 
